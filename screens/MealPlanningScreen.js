@@ -1,11 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native';
 
 const MealPlanningScreen = () => {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   let expandedDays = [];
+  let [contentToDisplay, setContentToDisplay] = useState(null);
+  let [chevron, setChevron] = useState(null);
 
   function toggleDay(day) {
     if (!expandedDays.includes(day)) {
@@ -13,6 +15,8 @@ const MealPlanningScreen = () => {
     } else {
       expandedDays = expandedDays.filter((item) => item !== day);
     }
+    console.log(expandedDays);
+    renderMeals(day);
   }
 
   function isDayExpanded(day) {
@@ -20,13 +24,14 @@ const MealPlanningScreen = () => {
   }
 
   function renderChevronIcon(day) {
-    return isDayExpanded(day) ? 'chevron-down' : 'chevron-right';
+    if (isDayExpanded(day)) setChevron('chevron-down');
+    else setChevron('chevron-right');
   }
 
   function renderMeals(day) {
     if (isDayExpanded(day)) {
-      return (
-        <>
+      setContentToDisplay(
+        <View>
           <View style={styles.mealContainer}>
             <Text style={styles.mealText}>Breakfast</Text>
           </View>
@@ -39,27 +44,29 @@ const MealPlanningScreen = () => {
           <View style={styles.mealContainer}>
             <Text style={styles.mealText}>Snack</Text>
           </View>
-        </>
+        </View>
       );
+      renderChevronIcon(day);
     }
-    return null;
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {days.map((dayOfWeek, index) => (
-        <TouchableOpacity
-          style={styles.dayContainer}
-          key={dayOfWeek + index}
-          onPress={() => toggleDay(dayOfWeek)}>
-          <View style={styles.dayHeader}>
-            <Text style={styles.dayText}>{dayOfWeek}</Text>
-            <Icon name={renderChevronIcon(dayOfWeek)} size={20} color="black" />
-          </View>
-          {renderMeals(dayOfWeek)}
-        </TouchableOpacity>
+        <View key={dayOfWeek + index}>
+          <TouchableOpacity
+            style={styles.dayContainer}
+            key={dayOfWeek + index}
+            onPress={(dayOfWeek) => toggleDay(dayOfWeek)}>
+            <View style={styles.dayHeader}>
+              <Text style={styles.dayText}>{dayOfWeek}</Text>
+              <Icon name={chevron} size={20} color="black" />
+            </View>
+          </TouchableOpacity>
+          {contentToDisplay}
+        </View>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
