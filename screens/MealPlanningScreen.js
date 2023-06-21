@@ -187,70 +187,112 @@ const MealPlanningScreen = () => {
     return expandedDays.includes(day);
   }
 
-  console.log(mealPlan);
+  function calculateTotalCalories() {
+    if (mealPlan == undefined) {
+      return 0;
+    }
+    let totalCaloriesAll = 0;
+
+    Object.keys(mealPlan[0]).forEach((dayOfWeek) => {
+      ['Breakfast', 'Lunch', 'Dinner', 'Snack'].forEach((mealType) => {
+        mealPlan[0][dayOfWeek][mealType].forEach((meal) => {
+          totalCaloriesAll += meal.calories;
+        });
+      });
+    });
+
+    return totalCaloriesAll;
+  }
+
   return (
     <ScrollView style={styles.container}>
-      {days.map((dayOfWeek, index) => (
-        <View key={dayOfWeek + index}>
-          <TouchableOpacity
-            style={styles.dayContainer}
-            key={dayOfWeek + index}
-            onPress={() => toggleDay(dayOfWeek)}>
-            <View style={styles.dayHeader}>
-              <Text style={styles.dayText}>{dayOfWeek}</Text>
-              {isDayExpanded(dayOfWeek) ? (
-                <Icon name="chevron-down" size={20} color="black" />
-              ) : (
-                <Icon name="chevron-right" size={20} color="black" />
-              )}
+      {mealPlan ? (
+        Object.keys(mealPlan[0]).map((dayOfWeek, index) => {
+          let totalCalories = 0;
+
+          return (
+            <View key={dayOfWeek + index}>
+              <TouchableOpacity
+                style={styles.dayContainer}
+                key={dayOfWeek + index}
+                onPress={() => toggleDay(dayOfWeek)}>
+                <View style={styles.dayHeader}>
+                  <Text style={styles.dayText}>{dayOfWeek}</Text>
+                  {isDayExpanded(dayOfWeek) ? (
+                    <Icon name="chevron-down" size={20} color="black" />
+                  ) : (
+                    <Icon name="chevron-right" size={20} color="black" />
+                  )}
+                </View>
+              </TouchableOpacity>
+              <View style={{ display: isDayExpanded(dayOfWeek) ? 'block' : 'none' }}>
+                <View>
+                  <View style={styles.mealContainer}>
+                    <Text style={styles.mealText}>Breakfast</Text>
+                    {mealPlan[0][dayOfWeek].Breakfast.map((meal, indexMeal) => {
+                      totalCalories += meal.calories;
+                      return (
+                        <View key={meal.name + indexMeal} style={styles.foodItem}>
+                          <Text style={styles.foodName}>Nom: {meal.name}</Text>
+                          <Text>Quantité: {meal.quantity}</Text>
+                          <Text>Calories: {meal.calories}</Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                  <View style={styles.mealContainer}>
+                    <Text style={styles.mealText}>Lunch</Text>
+                    {mealPlan[0][dayOfWeek].Lunch.map((meal, indexMeal) => {
+                      totalCalories += meal.calories;
+                      return (
+                        <View key={meal.name + indexMeal}>
+                          <Text>Nom: {meal.name}</Text>
+                          <Text>Quantité: {meal.quantity}</Text>
+                          <Text>Calories: {meal.calories}</Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                  <View style={styles.mealContainer}>
+                    <Text style={styles.mealText}>Dinner</Text>
+                    {mealPlan[0][dayOfWeek].Dinner.map((meal, indexMeal) => {
+                      totalCalories += meal.calories;
+                      return (
+                        <View key={meal.name + indexMeal}>
+                          <Text>Nom: {meal.name}</Text>
+                          <Text>Quantité: {meal.quantity}</Text>
+                          <Text>Calories: {meal.calories}</Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                  <View style={styles.mealContainer}>
+                    <Text style={styles.mealText}>Snack</Text>
+                    {mealPlan[0][dayOfWeek].Snack.map((meal, indexMeal) => {
+                      totalCalories += meal.calories;
+                      return (
+                        <View key={meal.name + indexMeal}>
+                          <Text>Nom: {meal.name}</Text>
+                          <Text>Quantité: {meal.quantity}</Text>
+                          <Text>Calories: {meal.calories}</Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                  <Text style={styles.totalCalories}>
+                    Total Calories of the day: {totalCalories}
+                  </Text>
+                </View>
+              </View>
             </View>
-          </TouchableOpacity>
-          <View style={{ display: isDayExpanded(dayOfWeek) ? 'block' : 'none' }}>
-            <View>
-              <View style={styles.mealContainer}>
-                <Text style={styles.mealText}>Breakfast</Text>
-                {mealPlan[0][dayOfWeek].Breakfast.map((meal, indexMeal) => (
-                  <View key={meal.name + indexMeal}>
-                    <Text>Nom: {meal.name}</Text>
-                    <Text>Quantité: {meal.quantity}</Text>
-                    <Text>Calories: {meal.calories}</Text>
-                  </View>
-                ))}
-              </View>
-              <View style={styles.mealContainer}>
-                <Text style={styles.mealText}>Lunch</Text>
-                {mealPlan[0][dayOfWeek].Lunch.map((meal, indexMeal) => (
-                  <View key={meal.name + indexMeal}>
-                    <Text>Nom: {meal.name}</Text>
-                    <Text>Quantité: {meal.quantity}</Text>
-                    <Text>Calories: {meal.calories}</Text>
-                  </View>
-                ))}
-              </View>
-              <View style={styles.mealContainer}>
-                <Text style={styles.mealText}>Dinner</Text>
-                {mealPlan[0][dayOfWeek].Dinner.map((meal, indexMeal) => (
-                  <View key={meal.name + indexMeal}>
-                    <Text>Nom: {meal.name}</Text>
-                    <Text>Quantité: {meal.quantity}</Text>
-                    <Text>Calories: {meal.calories}</Text>
-                  </View>
-                ))}
-              </View>
-              <View style={styles.mealContainer}>
-                <Text style={styles.mealText}>Snack</Text>
-                {mealPlan[0][dayOfWeek].Snack.map((meal, indexMeal) => (
-                  <View key={meal.name + indexMeal}>
-                    <Text>Nom: {meal.name}</Text>
-                    <Text>Quantité: {meal.quantity}</Text>
-                    <Text>Calories: {meal.calories}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          </View>
-        </View>
-      ))}
+          );
+        })
+      ) : (
+        <Text>Pas de Meal Plan enregistré!</Text>
+      )}
+      <Text style={styles.totalCaloriesAll}>
+        Total Calories (All Meals): {calculateTotalCalories()}
+      </Text>
     </ScrollView>
   );
 };
