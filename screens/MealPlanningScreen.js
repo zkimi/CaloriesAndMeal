@@ -1,158 +1,178 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MealPlanningScreen = () => {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const mealPlan = [
-    {
-      Monday: {
-        Breakfast: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Lunch: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Dinner: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Snack: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ]
-      },
-      Tuesday: {
-        Breakfast: [
-          { name: 'Apple', quantity: 2, calories: 26 },
-          { name: 'Egg', quantity: 1, calories: 27 }
-        ],
-        Lunch: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Dinner: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Snack: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Tuesday: {
-          Breakfast: [
-            { name: 'Apple', quantity: 2, calories: 28 },
-            { name: 'Egg', quantity: 1, calories: 29 }
-          ],
-          Lunch: [
-            { name: 'Apple', quantity: 2, calories: 25 },
-            { name: 'Egg', quantity: 1, calories: 25 }
-          ],
-          Dinner: [
-            { name: 'Apple', quantity: 2, calories: 25 },
-            { name: 'Egg', quantity: 1, calories: 25 }
-          ],
-          Snack: [
-            { name: 'Apple', quantity: 2, calories: 25 },
-            { name: 'Egg', quantity: 1, calories: 25 }
-          ]
-        }
-      },
-      Wednesday: {
-        Breakfast: [
-          { name: 'Apple', quantity: 2, calories: 30 },
-          { name: 'Egg', quantity: 1, calories: 31 }
-        ],
-        Lunch: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Dinner: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Snack: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ]
-      },
-      Thursday: {
-        Breakfast: [
-          { name: 'Apple', quantity: 2, calories: 32 },
-          { name: 'Egg', quantity: 1, calories: 33 }
-        ],
-        Lunch: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Dinner: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Snack: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ]
-      },
-      Friday: {
-        Breakfast: [
-          { name: 'Apple', quantity: 2, calories: 34 },
-          { name: 'Egg', quantity: 1, calories: 35 }
-        ],
-        Lunch: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Dinner: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Snack: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ]
-      },
-      Saturday: {
-        Breakfast: [
-          { name: 'Apple', quantity: 2, calories: 36 },
-          { name: 'Egg', quantity: 1, calories: 37 }
-        ],
-        Lunch: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Dinner: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Snack: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ]
-      },
-      Sunday: {
-        Breakfast: [
-          { name: 'Apple', quantity: 2, calories: 38 },
-          { name: 'Egg', quantity: 1, calories: 39 }
-        ],
-        Lunch: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Dinner: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ],
-        Snack: [
-          { name: 'Apple', quantity: 2, calories: 25 },
-          { name: 'Egg', quantity: 1, calories: 25 }
-        ]
+
+  const [mealPlan, setMealPlan] = useState({});
+
+  useEffect(() => {
+    // Load meal plan from local storage
+    loadMealPlan();
+  }, []);
+
+  const loadMealPlan = async () => {
+    try {
+      const savedMealPlan = await AsyncStorage.getItem('mealPlan');
+      if (savedMealPlan) {
+        setMealPlan(JSON.parse(savedMealPlan));
       }
+    } catch (error) {
+      console.log('Error loading meal plan:', error);
     }
-  ];
+  };
+
+  // const mealPlan = [
+  //   {
+  //     Monday: {
+  //       Breakfast: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Lunch: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Dinner: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Snack: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ]
+  //     },
+  //     Tuesday: {
+  //       Breakfast: [
+  //         { name: 'Apple', quantity: 2, calories: 26 },
+  //         { name: 'Egg', quantity: 1, calories: 27 }
+  //       ],
+  //       Lunch: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Dinner: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Snack: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Tuesday: {
+  //         Breakfast: [
+  //           { name: 'Apple', quantity: 2, calories: 28 },
+  //           { name: 'Egg', quantity: 1, calories: 29 }
+  //         ],
+  //         Lunch: [
+  //           { name: 'Apple', quantity: 2, calories: 25 },
+  //           { name: 'Egg', quantity: 1, calories: 25 }
+  //         ],
+  //         Dinner: [
+  //           { name: 'Apple', quantity: 2, calories: 25 },
+  //           { name: 'Egg', quantity: 1, calories: 25 }
+  //         ],
+  //         Snack: [
+  //           { name: 'Apple', quantity: 2, calories: 25 },
+  //           { name: 'Egg', quantity: 1, calories: 25 }
+  //         ]
+  //       }
+  //     },
+  //     Wednesday: {
+  //       Breakfast: [
+  //         { name: 'Apple', quantity: 2, calories: 30 },
+  //         { name: 'Egg', quantity: 1, calories: 31 }
+  //       ],
+  //       Lunch: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Dinner: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Snack: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ]
+  //     },
+  //     Thursday: {
+  //       Breakfast: [
+  //         { name: 'Apple', quantity: 2, calories: 32 },
+  //         { name: 'Egg', quantity: 1, calories: 33 }
+  //       ],
+  //       Lunch: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Dinner: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Snack: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ]
+  //     },
+  //     Friday: {
+  //       Breakfast: [
+  //         { name: 'Apple', quantity: 2, calories: 34 },
+  //         { name: 'Egg', quantity: 1, calories: 35 }
+  //       ],
+  //       Lunch: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Dinner: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Snack: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ]
+  //     },
+  //     Saturday: {
+  //       Breakfast: [
+  //         { name: 'Apple', quantity: 2, calories: 36 },
+  //         { name: 'Egg', quantity: 1, calories: 37 }
+  //       ],
+  //       Lunch: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Dinner: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Snack: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ]
+  //     },
+  //     Sunday: {
+  //       Breakfast: [
+  //         { name: 'Apple', quantity: 2, calories: 38 },
+  //         { name: 'Egg', quantity: 1, calories: 39 }
+  //       ],
+  //       Lunch: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Dinner: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ],
+  //       Snack: [
+  //         { name: 'Apple', quantity: 2, calories: 25 },
+  //         { name: 'Egg', quantity: 1, calories: 25 }
+  //       ]
+  //     }
+  //   }
+  // ];
   const [expandedDays, setExpandedDays] = useState([]);
 
   function toggleDay(day) {
@@ -167,6 +187,7 @@ const MealPlanningScreen = () => {
     return expandedDays.includes(day);
   }
 
+  console.log(mealPlan);
   return (
     <ScrollView style={styles.container}>
       {days.map((dayOfWeek, index) => (
