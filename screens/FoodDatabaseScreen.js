@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -9,6 +9,7 @@ import {
   Button,
   TextInput as RTextInput
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNPickerSelect from 'react-native-picker-select';
 
 import { ListItem, TextInput } from '@react-native-material/core';
@@ -17,7 +18,7 @@ import ApiService from '../js/ApiService';
 import { REACT_APP_API_AUTOCOMPLETE } from '@env';
 import { StyleSheet } from 'react-native';
 
-const FoodDatabaseScreen = ({ setMealPlan }) => {
+const FoodDatabaseScreen = () => {
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedFood, setSelectedFood] = useState(null);
@@ -26,6 +27,19 @@ const FoodDatabaseScreen = ({ setMealPlan }) => {
   const [selectedMeal, setSelectedMeal] = useState('Breakfast');
   const [selectedDay, setSelectedDay] = useState('Monday');
   const [addFoodModalVisible, setAddFoodModalVisible] = useState(false);
+  const [mealPlan, setMealPlan] = useState({});
+
+  const saveMealPlan = async () => {
+    try {
+      await AsyncStorage.setItem('mealPlan', JSON.stringify(mealPlan));
+    } catch (error) {
+      console.log('Error saving meal plan:', error);
+    }
+  };
+
+  useEffect(() => {
+    saveMealPlan();
+  }, [mealPlan]);
 
   const handleSuggestionClick = async (selectedSuggestion) => {
     try {
@@ -77,27 +91,32 @@ const FoodDatabaseScreen = ({ setMealPlan }) => {
   };
 
   const handleSaveFood = () => {
-    // Implement the logic to save the selected food with quantity and meal type
-    console.log('Food added:', selectedFood.label);
-    console.log('Quantity:', selectedQuantity);
-    console.log('Meal:', selectedMeal);
-
     const newFoodItem = {
       name: selectedFood.label,
       quantity: selectedQuantity,
       calories: selectedFood.nutrients.ENERC_KCAL
     };
 
-    const updatedMealPlan = mealPlan.map((day) => {
-      if (day.hasOwnProperty(selectedDay)) {
-        const updatedDay = { ...day };
-        updatedDay[selectedDay][selectedMeal].push(newFoodItem);
-        return updatedDay;
-      }
-      return day;
-    });
+    if (!mealPlan[selectedDay]) {
+      const newDayPlan = {
+        selectedMeal: newFoodItem
+      };
+      setMealPlan((prevMealPlan) => ({
+        ...prevMealPlan,
+        [selectedDay]: newDayPlan
+      }));
+    } else {
+      const updatedDayPlan = {
+        ...mealPlan[selectedDay],
+        selectedMeal: [...mealPlan[selectedDay][selectedMeal], newFoodItem]
+      };
+      setMealPlan((prevMealPlan) => ({
+        ...prevMealPlan,
+        selectedDay: updatedDayPlan
+      }));
+    }
 
-    setMealPlan(updatedMealPlan);
+    saveMealPlan();
 
     setAddFoodModalVisible(false);
     setSelectedFood(null);
@@ -189,7 +208,7 @@ const FoodDatabaseScreen = ({ setMealPlan }) => {
           <Text>Day :</Text>
           <RNPickerSelect
             selectedValue={selectedDay}
-            onValueChange={(itemValue) => setSelectedMeal(itemValue)}
+            onValueChange={(itemValue) => setSelectedDay(itemValue)}
             items={[
               { label: 'Monday', value: 'Monday' },
               { label: 'Tuesday', value: 'Tuesday' },
