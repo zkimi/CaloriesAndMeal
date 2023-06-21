@@ -194,8 +194,8 @@ const MealPlanningScreen = () => {
                       totalCalories += meal.calories;
                       return (
                         <View key={meal.name + indexMeal} style={styles.foodItem}>
-                          <Text style={styles.foodName}>Nom: {meal.name}</Text>
-                          <Text>Quantité: {meal.quantity}</Text>
+                          <Text style={styles.foodName}>Name: {meal.name}</Text>
+                          <Text>Quantity: {meal.quantity}</Text>
                           <Text>Calories: {meal.calories}</Text>
                         </View>
                       );
@@ -207,8 +207,8 @@ const MealPlanningScreen = () => {
                       totalCalories += meal.calories;
                       return (
                         <View key={meal.name + indexMeal}>
-                          <Text>Nom: {meal.name}</Text>
-                          <Text>Quantité: {meal.quantity}</Text>
+                          <Text>Name: {meal.name}</Text>
+                          <Text>Quantity: {meal.quantity}</Text>
                           <Text>Calories: {meal.calories}</Text>
                         </View>
                       );
@@ -220,8 +220,8 @@ const MealPlanningScreen = () => {
                       totalCalories += meal.calories;
                       return (
                         <View key={meal.name + indexMeal}>
-                          <Text>Nom: {meal.name}</Text>
-                          <Text>Quantité: {meal.quantity}</Text>
+                          <Text>Name: {meal.name}</Text>
+                          <Text>Quantity: {meal.quantity}</Text>
                           <Text>Calories: {meal.calories}</Text>
                         </View>
                       );
@@ -233,8 +233,8 @@ const MealPlanningScreen = () => {
                       totalCalories += meal.calories;
                       return (
                         <View key={meal.name + indexMeal}>
-                          <Text>Nom: {meal.name}</Text>
-                          <Text>Quantité: {meal.quantity}</Text>
+                          <Text>Name: {meal.name}</Text>
+                          <Text>Quantity: {meal.quantity}</Text>
                           <Text>Calories: {meal.calories}</Text>
                         </View>
                       );
@@ -249,7 +249,7 @@ const MealPlanningScreen = () => {
           );
         })
       ) : (
-        <Text>Pas de Meal Plan enregistré!</Text>
+        <Text>You d'ont have any meal plan saved</Text>
       )}
       <Text style={styles.totalCaloriesAll}>
         Total Calories (All Meals): {calculateTotalCalories()}
