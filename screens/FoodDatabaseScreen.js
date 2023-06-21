@@ -7,12 +7,11 @@ import {
   Text,
   Image,
   Button,
-  TouchableOpacity,
-  TextInput
+  TextInput as RTextInput
 } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-import { ListItem } from '@react-native-material/core';
+import { ListItem, TextInput } from '@react-native-material/core';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import ApiService from '../js/ApiService';
 import { REACT_APP_API_AUTOCOMPLETE } from '@env';
@@ -114,9 +113,7 @@ const FoodDatabaseScreen = ({ setMealPlan }) => {
   };
 
   const renderResultItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handleSuggestionClick(item)}>
-      <Text>{item}</Text>
-    </TouchableOpacity>
+    <ListItem onPress={() => handleSuggestionClick(item)} title={item} />
   );
 
   return (
@@ -160,9 +157,9 @@ const FoodDatabaseScreen = ({ setMealPlan }) => {
       <Modal visible={addFoodModalVisible} onRequestClose={handleCancelSaveFood}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Text>Quantity:</Text>
-          <TextInput
+          <RTextInput
             value={selectedQuantity.toString()}
-            onChangeText={(text) => setSelectedQuantity(parseInt(text))}
+            onChangeText={(text) => setSelectedQuantity(parseInt(text == '' ? '0' : text))}
             keyboardType="numeric"
             style={{ borderWidth: 1, borderColor: 'gray', padding: 8, marginBottom: 16 }}
           />
