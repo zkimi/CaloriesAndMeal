@@ -1,178 +1,158 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MealPlanningScreen = () => {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-  const [mealPlan, setMealPlan] = useState({});
-
-  useEffect(() => {
-    // Load meal plan from local storage
-    loadMealPlan();
-  }, []);
-
-  const loadMealPlan = async () => {
-    try {
-      const savedMealPlan = await AsyncStorage.getItem('mealPlan');
-      if (savedMealPlan) {
-        setMealPlan(JSON.parse(savedMealPlan));
+  const mealPlan = [
+    {
+      Monday: {
+        Breakfast: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Lunch: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Dinner: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Snack: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ]
+      },
+      Tuesday: {
+        Breakfast: [
+          { name: 'Apple', quantity: 2, calories: 26 },
+          { name: 'Egg', quantity: 1, calories: 27 }
+        ],
+        Lunch: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Dinner: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Snack: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Tuesday: {
+          Breakfast: [
+            { name: 'Apple', quantity: 2, calories: 28 },
+            { name: 'Egg', quantity: 1, calories: 29 }
+          ],
+          Lunch: [
+            { name: 'Apple', quantity: 2, calories: 25 },
+            { name: 'Egg', quantity: 1, calories: 25 }
+          ],
+          Dinner: [
+            { name: 'Apple', quantity: 2, calories: 25 },
+            { name: 'Egg', quantity: 1, calories: 25 }
+          ],
+          Snack: [
+            { name: 'Apple', quantity: 2, calories: 25 },
+            { name: 'Egg', quantity: 1, calories: 25 }
+          ]
+        }
+      },
+      Wednesday: {
+        Breakfast: [
+          { name: 'Apple', quantity: 2, calories: 30 },
+          { name: 'Egg', quantity: 1, calories: 31 }
+        ],
+        Lunch: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Dinner: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Snack: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ]
+      },
+      Thursday: {
+        Breakfast: [
+          { name: 'Apple', quantity: 2, calories: 32 },
+          { name: 'Egg', quantity: 1, calories: 33 }
+        ],
+        Lunch: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Dinner: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Snack: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ]
+      },
+      Friday: {
+        Breakfast: [
+          { name: 'Apple', quantity: 2, calories: 34 },
+          { name: 'Egg', quantity: 1, calories: 35 }
+        ],
+        Lunch: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Dinner: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Snack: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ]
+      },
+      Saturday: {
+        Breakfast: [
+          { name: 'Apple', quantity: 2, calories: 36 },
+          { name: 'Egg', quantity: 1, calories: 37 }
+        ],
+        Lunch: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Dinner: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Snack: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ]
+      },
+      Sunday: {
+        Breakfast: [
+          { name: 'Apple', quantity: 2, calories: 38 },
+          { name: 'Egg', quantity: 1, calories: 39 }
+        ],
+        Lunch: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Dinner: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ],
+        Snack: [
+          { name: 'Apple', quantity: 2, calories: 25 },
+          { name: 'Egg', quantity: 1, calories: 25 }
+        ]
       }
-    } catch (error) {
-      console.log('Error loading meal plan:', error);
     }
-  };
-
-  // const mealPlan = [
-  //   {
-  //     Monday: {
-  //       Breakfast: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Lunch: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Dinner: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Snack: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ]
-  //     },
-  //     Tuesday: {
-  //       Breakfast: [
-  //         { name: 'Apple', quantity: 2, calories: 26 },
-  //         { name: 'Egg', quantity: 1, calories: 27 }
-  //       ],
-  //       Lunch: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Dinner: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Snack: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Tuesday: {
-  //         Breakfast: [
-  //           { name: 'Apple', quantity: 2, calories: 28 },
-  //           { name: 'Egg', quantity: 1, calories: 29 }
-  //         ],
-  //         Lunch: [
-  //           { name: 'Apple', quantity: 2, calories: 25 },
-  //           { name: 'Egg', quantity: 1, calories: 25 }
-  //         ],
-  //         Dinner: [
-  //           { name: 'Apple', quantity: 2, calories: 25 },
-  //           { name: 'Egg', quantity: 1, calories: 25 }
-  //         ],
-  //         Snack: [
-  //           { name: 'Apple', quantity: 2, calories: 25 },
-  //           { name: 'Egg', quantity: 1, calories: 25 }
-  //         ]
-  //       }
-  //     },
-  //     Wednesday: {
-  //       Breakfast: [
-  //         { name: 'Apple', quantity: 2, calories: 30 },
-  //         { name: 'Egg', quantity: 1, calories: 31 }
-  //       ],
-  //       Lunch: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Dinner: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Snack: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ]
-  //     },
-  //     Thursday: {
-  //       Breakfast: [
-  //         { name: 'Apple', quantity: 2, calories: 32 },
-  //         { name: 'Egg', quantity: 1, calories: 33 }
-  //       ],
-  //       Lunch: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Dinner: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Snack: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ]
-  //     },
-  //     Friday: {
-  //       Breakfast: [
-  //         { name: 'Apple', quantity: 2, calories: 34 },
-  //         { name: 'Egg', quantity: 1, calories: 35 }
-  //       ],
-  //       Lunch: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Dinner: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Snack: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ]
-  //     },
-  //     Saturday: {
-  //       Breakfast: [
-  //         { name: 'Apple', quantity: 2, calories: 36 },
-  //         { name: 'Egg', quantity: 1, calories: 37 }
-  //       ],
-  //       Lunch: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Dinner: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Snack: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ]
-  //     },
-  //     Sunday: {
-  //       Breakfast: [
-  //         { name: 'Apple', quantity: 2, calories: 38 },
-  //         { name: 'Egg', quantity: 1, calories: 39 }
-  //       ],
-  //       Lunch: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Dinner: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ],
-  //       Snack: [
-  //         { name: 'Apple', quantity: 2, calories: 25 },
-  //         { name: 'Egg', quantity: 1, calories: 25 }
-  //       ]
-  //     }
-  //   }
-  // ];
+  ];
   const [expandedDays, setExpandedDays] = useState([]);
 
   function toggleDay(day) {
@@ -187,112 +167,69 @@ const MealPlanningScreen = () => {
     return expandedDays.includes(day);
   }
 
-  function calculateTotalCalories() {
-    if (mealPlan == undefined) {
-      return 0;
-    }
-    let totalCaloriesAll = 0;
-
-    Object.keys(mealPlan[0]).forEach((dayOfWeek) => {
-      ['Breakfast', 'Lunch', 'Dinner', 'Snack'].forEach((mealType) => {
-        mealPlan[0][dayOfWeek][mealType].forEach((meal) => {
-          totalCaloriesAll += meal.calories;
-        });
-      });
-    });
-
-    return totalCaloriesAll;
-  }
-
   return (
     <ScrollView style={styles.container}>
-      {mealPlan ? (
-        Object.keys(mealPlan[0]).map((dayOfWeek, index) => {
-          let totalCalories = 0;
-
-          return (
-            <View key={dayOfWeek + index}>
-              <TouchableOpacity
-                style={styles.dayContainer}
-                key={dayOfWeek + index}
-                onPress={() => toggleDay(dayOfWeek)}>
-                <View style={styles.dayHeader}>
-                  <Text style={styles.dayText}>{dayOfWeek}</Text>
-                  {isDayExpanded(dayOfWeek) ? (
-                    <Icon name="chevron-down" size={20} color="black" />
-                  ) : (
-                    <Icon name="chevron-right" size={20} color="black" />
-                  )}
-                </View>
-              </TouchableOpacity>
-              <View style={{ display: isDayExpanded(dayOfWeek) ? 'block' : 'none' }}>
-                <View>
-                  <View style={styles.mealContainer}>
-                    <Text style={styles.mealText}>Breakfast</Text>
-                    {mealPlan[0][dayOfWeek].Breakfast.map((meal, indexMeal) => {
-                      totalCalories += meal.calories;
-                      return (
-                        <View key={meal.name + indexMeal} style={styles.foodItem}>
-                          <Text style={styles.foodName}>Nom: {meal.name}</Text>
-                          <Text>Quantité: {meal.quantity}</Text>
-                          <Text>Calories: {meal.calories}</Text>
-                        </View>
-                      );
-                    })}
+      {days.map((dayOfWeek, index) => (
+        <View key={dayOfWeek + index}>
+          <TouchableOpacity
+            style={styles.dayContainer}
+            key={dayOfWeek + index}
+            onPress={() => toggleDay(dayOfWeek)}>
+            <View style={styles.dayHeader}>
+              <Text style={styles.dayText}>{dayOfWeek}</Text>
+              {isDayExpanded(dayOfWeek) ? (
+                <Icon name="chevron-down" size={20} color="black" />
+              ) : (
+                <Icon name="chevron-right" size={20} color="black" />
+              )}
+            </View>
+          </TouchableOpacity>
+          <View style={{ display: isDayExpanded(dayOfWeek) ? 'block' : 'none' }}>
+            <View>
+              <View style={styles.mealContainer}>
+                <Text style={styles.mealText}>Breakfast</Text>
+                {mealPlan[0][dayOfWeek].Breakfast.map((meal, indexMeal) => (
+                  <View key={meal.name + indexMeal}>
+                    <Text>Nom: {meal.name}</Text>
+                    <Text>Quantité: {meal.quantity}</Text>
+                    <Text>Calories: {meal.calories}</Text>
                   </View>
-                  <View style={styles.mealContainer}>
-                    <Text style={styles.mealText}>Lunch</Text>
-                    {mealPlan[0][dayOfWeek].Lunch.map((meal, indexMeal) => {
-                      totalCalories += meal.calories;
-                      return (
-                        <View key={meal.name + indexMeal}>
-                          <Text>Nom: {meal.name}</Text>
-                          <Text>Quantité: {meal.quantity}</Text>
-                          <Text>Calories: {meal.calories}</Text>
-                        </View>
-                      );
-                    })}
+                ))}
+              </View>
+              <View style={styles.mealContainer}>
+                <Text style={styles.mealText}>Lunch</Text>
+                {mealPlan[0][dayOfWeek].Lunch.map((meal, indexMeal) => (
+                  <View key={meal.name + indexMeal}>
+                    <Text>Nom: {meal.name}</Text>
+                    <Text>Quantité: {meal.quantity}</Text>
+                    <Text>Calories: {meal.calories}</Text>
                   </View>
-                  <View style={styles.mealContainer}>
-                    <Text style={styles.mealText}>Dinner</Text>
-                    {mealPlan[0][dayOfWeek].Dinner.map((meal, indexMeal) => {
-                      totalCalories += meal.calories;
-                      return (
-                        <View key={meal.name + indexMeal}>
-                          <Text>Nom: {meal.name}</Text>
-                          <Text>Quantité: {meal.quantity}</Text>
-                          <Text>Calories: {meal.calories}</Text>
-                        </View>
-                      );
-                    })}
+                ))}
+              </View>
+              <View style={styles.mealContainer}>
+                <Text style={styles.mealText}>Dinner</Text>
+                {mealPlan[0][dayOfWeek].Dinner.map((meal, indexMeal) => (
+                  <View key={meal.name + indexMeal}>
+                    <Text>Nom: {meal.name}</Text>
+                    <Text>Quantité: {meal.quantity}</Text>
+                    <Text>Calories: {meal.calories}</Text>
                   </View>
-                  <View style={styles.mealContainer}>
-                    <Text style={styles.mealText}>Snack</Text>
-                    {mealPlan[0][dayOfWeek].Snack.map((meal, indexMeal) => {
-                      totalCalories += meal.calories;
-                      return (
-                        <View key={meal.name + indexMeal}>
-                          <Text>Nom: {meal.name}</Text>
-                          <Text>Quantité: {meal.quantity}</Text>
-                          <Text>Calories: {meal.calories}</Text>
-                        </View>
-                      );
-                    })}
+                ))}
+              </View>
+              <View style={styles.mealContainer}>
+                <Text style={styles.mealText}>Snack</Text>
+                {mealPlan[0][dayOfWeek].Snack.map((meal, indexMeal) => (
+                  <View key={meal.name + indexMeal}>
+                    <Text>Nom: {meal.name}</Text>
+                    <Text>Quantité: {meal.quantity}</Text>
+                    <Text>Calories: {meal.calories}</Text>
                   </View>
-                  <Text style={styles.totalCalories}>
-                    Total Calories of the day: {totalCalories}
-                  </Text>
-                </View>
+                ))}
               </View>
             </View>
-          );
-        })
-      ) : (
-        <Text>Pas de Meal Plan enregistré!</Text>
-      )}
-      <Text style={styles.totalCaloriesAll}>
-        Total Calories (All Meals): {calculateTotalCalories()}
-      </Text>
+          </View>
+        </View>
+      ))}
     </ScrollView>
   );
 };
